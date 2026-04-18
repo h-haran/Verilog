@@ -1,5 +1,39 @@
-I have built a Matlb script that converts"Base 10 Conversion to 8421 again Converted to (Minimum Error Code) or Rotary encoder code for my upcoming projects convenience and validation in digital electronics
-## Call for Collaboration
-- 🎓 Enthusiasts: Feel free to run the code, test it with different inputs, and drop your observations in the comments.
-- 👨‍💻 Professionals: I welcome feedback on optimization, coding style, or edge cases I may have missed. 
-Contact: haran0892@gmail.com
+clc;
+clear;
+while true
+    No = input('\nHow many Decimal Numbers for conversion? ');
+
+    if (No == 0) || (No > 2)
+        disp('Not more than Two or equal to Zero');
+    else
+        break;
+    end
+end
+count = 1;
+while count <= No
+a=input('Enter the Decimal Number: ');
+x=[ ];
+y=[ ];
+P=[ ];
+i=1;
+
+while a>=1
+    x(i,1)=floor(a/2);
+    y(i,1)=mod(a,2);
+    a=x(i,1);
+    i=i+1;
+end
+j=1;
+wl=length(y);
+P(1,j)=y(end);
+while j<length(y)
+P(1,j+1)=xor(y(wl),y(wl-1));
+j=j+1;
+wl=wl-1;
+end
+
+disp('Binary'); disp(flip(y'));
+disp('Gray:');disp(P);
+count = count + 1;
+end
+
