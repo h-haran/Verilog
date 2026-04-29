@@ -1,0 +1,112 @@
+//  Part2-//  (21,16) 
+//////////////// Design Hamming Decoder ////////////////////////
+module Hamm_Decoder(
+input wire [21:1]HE,
+output reg [16:1]HMD,
+output wire [5:1]S
+);
+////////////////////////////////////////////////
+
+reg [21:1]corrected;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+assign S[1]=HE[1]^HE[3]^HE[5]^HE[7]^HE[9]^HE[11]^HE[13]^HE[15]^HE[17]^HE[19]^HE[21];                     //S[1]
+assign S[2]=HE[2]^HE[3]^HE[6]^HE[7]^HE[10]^HE[11]^HE[14]^HE[15]^HE[18]^HE[19];                     //S[2]
+assign S[3]=HE[4]^HE[5]^HE[6]^HE[7]^HE[12]^HE[13]^HE[14]^HE[15]^HE[20]^HE[21];                //S[4]
+assign S[4]=HE[8]^HE[9]^HE[10]^HE[11]^HE[12]^HE[13]^HE[14]^HE[15];		        //S[8]
+assign S[5]=HE[16]^HE[17]^HE[18]^HE[19]^HE[20]^HE[21];			         //S[16]
+/////////////////////////////////////////////
+
+/////////////Case///////////
+always@(*)begin
+/////////////////////////////////////////
+corrected=HE;
+////////////////////////////////////////
+case(S)
+5'b00001:corrected[1]=~HE[1];
+5'b00010:corrected[2]=~HE[2];
+5'b00011:corrected[3]=~HE[3];
+5'b00100:corrected[4]=~HE[4];
+5'b00101:corrected[5]=~HE[5];
+5'b00110:corrected[6]=~HE[6];
+5'b00111:corrected[7]=~HE[7];
+5'b01000:corrected[8]=~HE[8];
+5'b01001:corrected[9]=~HE[9];
+5'b01010:corrected[10]=~HE[10];
+5'b01011:corrected[11]=~HE[11];
+5'b01100:corrected[12]=~HE[12];
+5'b01101:corrected[13]=~HE[13];
+5'b01110:corrected[14]=~HE[14];
+5'b01111:corrected[15]=~HE[15];
+5'b10000:corrected[16]=~HE[16];
+5'b10001:corrected[17]=~HE[17];
+5'b10010:corrected[18]=~HE[18];
+5'b10011:corrected[19]=~HE[19];
+5'b10100:corrected[20]=~HE[20];
+5'b10101:corrected[21]=~HE[21];
+endcase
+end
+/////////////////////////////////////
+always@(*)begin
+HMD[1]=corrected[3];
+HMD[2]=corrected[5];
+HMD[3]=corrected[6];
+HMD[4]=corrected[7];
+HMD[5]=corrected[9];
+HMD[6]=corrected[10];
+HMD[7]=corrected[11];
+HMD[8]=corrected[12];
+HMD[9]=corrected[13];
+HMD[10]=corrected[14];
+HMD[11]=corrected[15];
+HMD[12]=corrected[17];
+HMD[13]=corrected[18];
+HMD[14]=corrected[19];
+HMD[15]=corrected[20];
+HMD[16]=corrected[21];
+end
+//
+//////////////////////////////////////
+endmodule
+/////////////////////////////////////////////////////////////////////////////////////////////
+//// TEST BENCH//////
+///////////////////
+module tb_Hamm_Decoder();
+reg[21:1]HE;
+wire[16:1]HMD;
+wire [5:1]S;
+/////////
+ Hamm_Decoder uut(
+.HE(HE),
+.HMD(HMD),
+.S(S)
+);
+initial  begin
+// test 1
+HE=21'b000000000000101001101;
+#10;
+$display("\n The Hamming Decoded Data Bits:% b",HMD);
+$display("\n The Syndrome bits :% b",S);
+// test 2
+HE=21'b000000000000111001100;
+#10;
+$display("\n The Hamming Decoded Data Bits:% b",HMD);
+$display("\n The Syndrome bits :% b",S);
+// test 3
+HE=21'b000000000000111001101;
+#10;
+$display("\n The Hamming Decoded Data Bits:% b",HMD);
+$display("\n The Syndrome bits :% b",S);
+// test 4
+HE=21'b000100000000111001101;
+#10;
+$display("\n The Hamming Decoded Data Bits:% b",HMD);
+$display("\n The Syndrome bits :% b",S);
+// test 5
+HE=21'b000000000000001001101;
+#10;
+$display("\n The Hamming Decoded Data Bits:% b",HMD);
+$display("\n The Syndrome bits :% b",S);
+$finish;
+end
+endmodule
+
